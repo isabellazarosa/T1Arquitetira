@@ -10,4 +10,5 @@ import com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.entidades.ItemD
 public interface EstoqueJPA_ItfRep extends CrudRepository<ItemDeEstoque,Long>{
     List<ItemDeEstoque> findAll();
     Optional<ItemDeEstoque> findById(long id);
+    Optional<ItemDeEstoque> findByProduto_Id(Long produtoId);
 }

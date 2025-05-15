@@ -1,6 +1,7 @@
 package com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.implemRepositorios;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -42,21 +43,23 @@ public class EstoqueRepJPA implements IEstoqueRepositorio{
 
     @Override
     public int quantidadeEmEstoque(long codigo) {
-        ItemDeEstoque item = estoque.findById(codigo).orElse(null);
-        if (item == null){
+        Optional<ItemDeEstoque> itemOpt = estoque.findByProduto_Id(codigo);
+
+        if (itemOpt.isEmpty()) {
             return -1;
-        }else{
-            return item.getQuantidade();
         }
+        return itemOpt.get().getQuantidade();
     }
 
     @Override
     public int baixaEstoque(long codProd, int qtdade) {
-        ItemDeEstoque item = estoque.findById(codProd).orElse(null);
-        if (item == null){
+        Optional<ItemDeEstoque> itemOpt = estoque.findByProduto_Id(codProd);
+        if (itemOpt.isEmpty()) {
             throw new IllegalArgumentException("Produto inexistente");
         }
-        if (item.getQuantidade() < qtdade){
+        ItemDeEstoque item = itemOpt.get();
+
+        if (item.getQuantidade() < qtdade) {
             throw new IllegalArgumentException("Quantidade em estoque insuficiente");
         }
         int novaQuantidade = item.getQuantidade() - qtdade;
