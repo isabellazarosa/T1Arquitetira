@@ -1,6 +1,11 @@
 package com.bcopstein.sistvendas.dominio.entidades;
+import jakarta.persistence.*;
 
+
+@Embeddable
 public class ItemPedidoModel {
+    @ManyToOne
+    @JoinColumn(name = "produto_id") 
     private ProdutoModel produto;
     private int quantidade;
     
