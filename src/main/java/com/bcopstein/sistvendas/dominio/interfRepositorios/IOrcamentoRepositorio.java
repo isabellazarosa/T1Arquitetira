@@ -9,4 +9,5 @@ public interface IOrcamentoRepositorio {
     OrcamentoModel cadastra(OrcamentoModel orcamento);
     OrcamentoModel recuperaPorId(long id);
     void marcaComoEfetivado(long id); 
+    void atualiza(OrcamentoModel orcamento);
 }

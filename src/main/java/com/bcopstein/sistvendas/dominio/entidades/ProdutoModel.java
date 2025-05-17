@@ -1,6 +1,9 @@
 package com.bcopstein.sistvendas.dominio.entidades;
+import jakarta.persistence.*;
 
+@Entity
 public class ProdutoModel{
+    @Id
     private long id;
     private String descricao;
     private double precoUnitario;

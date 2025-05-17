@@ -4,18 +4,22 @@ import java.util.List;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.bcopstein.sistvendas.dominio.entidades.OrcamentoModel;
 import com.bcopstein.sistvendas.dominio.interfRepositorios.IOrcamentoRepositorio;
+import com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.interfaceJPA.OrcamentoJPA_ItfRep;
 
 @Repository
 @Primary
 public class OrcamentoRepJPA implements IOrcamentoRepositorio {
 
+    @Autowired
+    private OrcamentoJPA_ItfRep orcamentoJPA;
+
     @Override
     public List<OrcamentoModel> todos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'todos'");
+        return orcamentoJPA.findAll();
     }
 
     @Override
@@ -32,8 +36,15 @@ public class OrcamentoRepJPA implements IOrcamentoRepositorio {
 
     @Override
     public void marcaComoEfetivado(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'marcaComoEfetivado'");
+        OrcamentoModel orc = orcamentoJPA.findById(id)
+            .orElseThrow(() -> new RuntimeException("Orçamento não encontrado"));
+        orc.efetiva();
+        orcamentoJPA.save(orc);
     }
     
+    @Override
+    public void atualiza(OrcamentoModel orcamento) {
+        orcamentoJPA.save(orcamento);
+    }
+
 }

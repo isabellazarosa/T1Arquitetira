@@ -69,6 +69,7 @@ public class ServicoDeVendas {
             }
             // Marca o orcamento como efetivado
             orcamentos.marcaComoEfetivado(id);
+            orcamentos.atualiza(orcamento);
         }
         // Retorna o orçamento marcado como efetivado ou não conforme disponibilidade do estoque
         return orcamentos.recuperaPorId(id);

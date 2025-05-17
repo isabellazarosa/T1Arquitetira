@@ -2,25 +2,42 @@ package com.bcopstein.sistvendas.dominio.entidades;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.time.LocalDate;
+import jakarta.persistence.*;
 
+@Entity
 public class OrcamentoModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @ElementCollection
     private List<ItemPedidoModel> itens;
     private double custoItens;
     private double imposto;
     private double desconto;
     private double custoConsumidor;
     private boolean efetivado;
+    private LocalDate dataEfetivacao;
 
     public OrcamentoModel(long id) {
         this.id = id;
         this.itens = new LinkedList<>();
         this.efetivado = false;
+        this.dataEfetivacao = null;
     }
-
+     
     public OrcamentoModel(){
         this.itens = new LinkedList<>();
         this.efetivado = false;
+        this.dataEfetivacao = null;
+    }
+
+    public LocalDate getDataEfetivacao() {
+        return dataEfetivacao;
+    }
+
+    public void setDataEfetivacao(LocalDate dataEfetivacao) {
+        this.dataEfetivacao = dataEfetivacao;
     }
 
     public void addItensPedido(PedidoModel pedido){
@@ -78,6 +95,7 @@ public class OrcamentoModel {
     }
 
     public void efetiva(){
-        efetivado = true;
+        this.efetivado = true;
+        this.dataEfetivacao = LocalDate.now();
     }
 }
