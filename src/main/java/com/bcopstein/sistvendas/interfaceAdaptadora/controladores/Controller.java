@@ -53,7 +53,8 @@ public class Controller {
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosDisponiveis(){
         return produtosDisponiveis.run();
-    }    
+    }
+
 
     @PostMapping("novoOrcamento")
     @CrossOrigin(origins = "*")
@@ -68,9 +69,10 @@ public class Controller {
     }
 
     //Retorna a quantidade disponível no estoque para uma lista de produtos informados
-    @PostMapping("quantidadeEstoquePorProdutos")
+    @GetMapping("quantidadeEstoquePorProdutos")
     @CrossOrigin(origins = "*")
-    public List<ProdutoEstoqueDTO> quantidadeEstoquePorProdutos(@RequestBody List<String> codigosProdutos) {
+    public List<ProdutoEstoqueDTO> quantidadeEstoquePorProdutos(@RequestBody List<Long> codigosProdutos) {
+        System.out.println("codigo =" + codigosProdutos);
         return quantEstoqueDisponivel.run(codigosProdutos);
     }
 

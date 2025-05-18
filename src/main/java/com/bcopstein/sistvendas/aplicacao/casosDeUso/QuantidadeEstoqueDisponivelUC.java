@@ -32,7 +32,7 @@ public class QuantidadeEstoqueDisponivelUC {
                 .toList();
     }
 
-    public List<ProdutoEstoqueDTO> run(List<String> codigosProdutos) {
+    public List<ProdutoEstoqueDTO> run(List<Long> codigosProdutos) {
         return servicoEstoque.produtosDisponiveis().stream()
                 .filter(p -> codigosProdutos.contains(p.getId()))
                 .map(p -> {
