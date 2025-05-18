@@ -1,9 +1,14 @@
 package com.bcopstein.sistvendas.aplicacao.casosDeUso;
 
+import java.util.Arrays;
 import java.util.List;
 
 //import org.springframework.beans.factory.annotation.Autowired;
+import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeItem;
+import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeTotalDeItens;
 import com.bcopstein.sistvendas.dominio.politicas.descontos.PoliticaDeDesconto;
+import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoFederalPadrao;
+import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoRS;
 import com.bcopstein.sistvendas.dominio.politicas.impostos.PoliticaDeImposto;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +37,16 @@ public class CriaOrcamentoUC {
     ) {
         this.servicoDeVendas = servicoDeVendas;
         this.servicoDeEstoque = servicoDeEstoque;
-        this.politicasDeImposto = politicasDeImposto;
-        this.politicasDeDesconto = politicasDeDesconto;
+        // Define as políticas
+        this.politicasDeImposto = Arrays.asList(
+                new ImpostoRS(),
+                new ImpostoFederalPadrao()
+        );
+
+        this.politicasDeDesconto = Arrays.asList(
+                new DescontoPorQuantidadeItem(),
+                new DescontoPorQuantidadeTotalDeItens()
+        );
     }
 
 

@@ -55,19 +55,6 @@ public class Controller {
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
         this.chegada = chegada;
 
-        // Define as políticas
-        List<PoliticaDeImposto> politicasDeImposto = Arrays.asList(
-                new ImpostoRS(),
-                new ImpostoFederalPadrao()
-        );
-
-        List<PoliticaDeDesconto> politicasDeDesconto = Arrays.asList(
-                new DescontoPorQuantidadeItem(),
-                new DescontoPorQuantidadeTotalDeItens()
-        );
-
-        // Cria o UC com as políticas
-        this.criaOrcamento = new CriaOrcamentoUC(servicoDeVendas, servicoEstoque, politicasDeImposto, politicasDeDesconto);
     }
 
     @GetMapping("")
