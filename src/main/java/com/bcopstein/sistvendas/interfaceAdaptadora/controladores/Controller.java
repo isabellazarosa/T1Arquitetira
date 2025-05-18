@@ -33,12 +33,14 @@ public class Controller {
                       CriaOrcamentoUC criaOrcamento,
                       EfetivaOrcamentoUC efetivaOrcamento,
                       QuantidadeEstoqueDisponivelUC quantEstoqueDisponivel,
-                      OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo){
+                      OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo,
+                      ChegadaUC chegada){
         this.produtosDisponiveis = produtosDisponiveis;
         this.criaOrcamento = criaOrcamento;
         this.efetivaOrcamento = efetivaOrcamento;
         this.quantEstoqueDisponivel = quantEstoqueDisponivel;
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
+        this.chegada = chegada;
     }
 
     @GetMapping("")
@@ -83,7 +85,7 @@ public class Controller {
 
 
     //TODO INFORMAR A CHEGADA DE PRODUTOS NO ESTOQUE
-    @PostMapping("Chegada")
+    @PostMapping("chegada")
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> chegadaNoEstoque(@RequestBody List<ProdutoDTO> itens){
         return chegada.run(itens);
