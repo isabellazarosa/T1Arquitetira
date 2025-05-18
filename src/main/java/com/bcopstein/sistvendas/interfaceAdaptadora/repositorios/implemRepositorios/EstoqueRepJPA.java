@@ -3,6 +3,8 @@ package com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.implemReposito
 import java.util.List;
 import java.util.Optional;
 
+import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
+import com.bcopstein.sistvendas.dominio.entidades.ItemDeEstoqueModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,7 @@ import com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.interfaceJPA.Es
 @Primary
 public class EstoqueRepJPA implements IEstoqueRepositorio{
     private EstoqueJPA_ItfRep estoque;
-
+    private int proxId = 300; //TODO achar uma forma menos troglodita de fazer autoincrement
     @Autowired
     public EstoqueRepJPA(EstoqueJPA_ItfRep estoque){
         this.estoque = estoque;
@@ -66,5 +68,26 @@ public class EstoqueRepJPA implements IEstoqueRepositorio{
         item.setQuantidade(novaQuantidade);
         estoque.save(item);
         return novaQuantidade;
+    }
+
+    @Override
+    public int addEstoque(long codProd){//adiciona mais um para o item
+        Optional<ItemDeEstoque> itemOpt = estoque.findByProduto_Id(codProd);
+        if (itemOpt == null){
+            throw new IllegalArgumentException("Produto inexistente");
+        }
+        ItemDeEstoque item = itemOpt.get();
+        item.setQuantidade(item.getQuantidade()+1);
+        estoque.save(item);
+        return item.getQuantidade();
+    }
+
+    @Override
+    public int addNovoEstoque(ProdutoDTO dto){
+        Produto produto = new Produto(dto.getId(), dto.getDescricao(), dto.getPrecoUnitario());
+        ItemDeEstoque itemDeEstoque = new ItemDeEstoque(proxId,produto,1,0,200);//quantidades temporarias
+        proxId+= 100;
+        estoque.save(itemDeEstoque);
+        return 0;
     }
 }
