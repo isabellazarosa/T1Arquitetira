@@ -67,4 +67,22 @@ public class EstoqueRepJPA implements IEstoqueRepositorio{
         estoque.save(item);
         return novaQuantidade;
     }
+
+    @Override
+    public int adicionaEstoque(String codProd, int qtdade) {
+        // Converte o código recebido para long, se for o caso
+        long codigoProduto = Long.parseLong(codProd);
+        Optional<ItemDeEstoque> itemOpt = estoque.findByProduto_Id(codigoProduto);
+
+        if (itemOpt.isEmpty()) {
+            throw new IllegalArgumentException("Produto inexistente");
+        }
+
+        ItemDeEstoque item = itemOpt.get();
+        item.setQuantidade(item.getQuantidade() + qtdade);
+        estoque.save(item);
+
+        return item.getQuantidade();
+    }
+
 }

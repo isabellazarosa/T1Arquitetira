@@ -9,4 +9,5 @@ public interface IEstoqueRepositorio {
     List<ProdutoModel> todosComEstoque();
     int quantidadeEmEstoque(long codigo);
     int baixaEstoque(long codProd, int qtdade);
+    int adicionaEstoque(String codProd, int qtdade);
 }

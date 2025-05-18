@@ -35,5 +35,10 @@ public class ServicoDeEstoque{
 
     public void baixaEstoque(long id,int qtdade){
         estoque.baixaEstoque(id,qtdade);
-    }  
+    }
+
+    public void adicionaAoEstoque(String codigoProduto, int quantidade) {
+        estoque.adicionaEstoque(codigoProduto, quantidade);
+    }
+
 }
