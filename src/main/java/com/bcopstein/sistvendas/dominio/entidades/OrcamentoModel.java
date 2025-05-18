@@ -66,6 +66,13 @@ public class OrcamentoModel {
         this.custoItens = custoItens;
     }
 
+    //Calcula o valor total dos itens do orcamento baseado na lista atual de itens e seus precos
+    public double valorTotalItens() {
+        return itens.stream()
+                .mapToDouble(item -> item.getProduto().getPrecoUnitario() * item.getQuantidade())
+                .sum();
+    }
+
     public double getImposto() {
         return imposto;
     }

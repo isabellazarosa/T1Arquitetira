@@ -3,6 +3,7 @@ package com.bcopstein.sistvendas.interfaceAdaptadora.controladores;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoEstoqueDTO;
@@ -23,6 +24,17 @@ import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoResumoDTO;
 
+import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoRS;
+import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoFederalPadrao;
+import com.bcopstein.sistvendas.dominio.politicas.impostos.PoliticaDeImposto;
+
+import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeItem;
+import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeTotalDeItens;
+import com.bcopstein.sistvendas.dominio.politicas.descontos.PoliticaDeDesconto;
+
+import com.bcopstein.sistvendas.dominio.servicos.ServicoDeEstoque;
+import com.bcopstein.sistvendas.dominio.servicos.ServicoDeVendas;
+
 @RestController
 public class Controller {
     private ProdutosDisponiveisUC produtosDisponiveis;
@@ -33,15 +45,29 @@ public class Controller {
 
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
-                      CriaOrcamentoUC criaOrcamento,
                       EfetivaOrcamentoUC efetivaOrcamento,
                       QuantidadeEstoqueDisponivelUC quantEstoqueDisponivel,
-                      OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo){
+                      OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo,
+                      ServicoDeVendas servicoDeVendas,
+                      ServicoDeEstoque servicoEstoque) {
         this.produtosDisponiveis = produtosDisponiveis;
-        this.criaOrcamento = criaOrcamento;
         this.efetivaOrcamento = efetivaOrcamento;
         this.quantEstoqueDisponivel = quantEstoqueDisponivel;
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
+
+        // Define as políticas
+        List<PoliticaDeImposto> politicasDeImposto = Arrays.asList(
+                new ImpostoRS(),
+                new ImpostoFederalPadrao()
+        );
+
+        List<PoliticaDeDesconto> politicasDeDesconto = Arrays.asList(
+                new DescontoPorQuantidadeItem(),
+                new DescontoPorQuantidadeTotalDeItens()
+        );
+
+        // Cria o UC com as políticas
+        this.criaOrcamento = new CriaOrcamentoUC(servicoDeVendas, servicoEstoque, politicasDeImposto, politicasDeDesconto);
     }
 
     @GetMapping("")
