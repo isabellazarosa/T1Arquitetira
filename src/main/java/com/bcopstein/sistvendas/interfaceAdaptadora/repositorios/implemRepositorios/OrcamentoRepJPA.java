@@ -30,8 +30,7 @@ public class OrcamentoRepJPA implements IOrcamentoRepositorio {
 
     @Override
     public OrcamentoModel recuperaPorId(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'recuperaPorId'");
+        return orcamentoJPA.findById(id).get();
     }
 
     @Override

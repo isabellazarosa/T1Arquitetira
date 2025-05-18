@@ -3,10 +3,12 @@ package com.bcopstein.sistvendas.interfaceAdaptadora.controladores;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.*;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoEstoqueDTO;
+import com.bcopstein.sistvendas.aplicacao.casosDeUso.OrcamentosEfetivadosNoPeriodoUC;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,17 @@ import com.bcopstein.sistvendas.aplicacao.dtos.ItemPedidoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoResumoDTO;
+
+import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoRS;
+import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoFederalPadrao;
+import com.bcopstein.sistvendas.dominio.politicas.impostos.PoliticaDeImposto;
+
+import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeItem;
+import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeTotalDeItens;
+import com.bcopstein.sistvendas.dominio.politicas.descontos.PoliticaDeDesconto;
+
+import com.bcopstein.sistvendas.dominio.servicos.ServicoDeEstoque;
+import com.bcopstein.sistvendas.dominio.servicos.ServicoDeVendas;
 
 @RestController
 public class Controller {
@@ -41,6 +54,7 @@ public class Controller {
         this.quantEstoqueDisponivel = quantEstoqueDisponivel;
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
         this.chegada = chegada;
+
     }
 
     @GetMapping("")
@@ -73,7 +87,7 @@ public class Controller {
     public List<ProdutoEstoqueDTO> quantidadesEmEstoque(){
                 return quantEstoqueDisponivel.run();
             }
-
+    
     @GetMapping("orcamentosEfetivados/{inicio}/{fim}")
     @CrossOrigin(origins = "*")
     public List<OrcamentoResumoDTO> orcamentosEfetivados(@PathVariable String inicio, @PathVariable String fim) {
