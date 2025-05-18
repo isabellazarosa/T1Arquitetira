@@ -1,6 +1,8 @@
 package com.bcopstein.sistvendas.dominio.servicos;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,5 +75,14 @@ public class ServicoDeVendas {
         }
         // Retorna o orçamento marcado como efetivado ou não conforme disponibilidade do estoque
         return orcamentos.recuperaPorId(id);
+    }
+
+    public List<OrcamentoModel> orcamentosEfetivadosEntre(LocalDate inicio, LocalDate fim) {
+    return orcamentos.todos().stream()
+        .filter(orc -> orc.isEfetivado()
+                    && orc.getDataEfetivacao() != null
+                    && !orc.getDataEfetivacao().isBefore(inicio)
+                    && !orc.getDataEfetivacao().isAfter(fim))
+        .collect(Collectors.toList());
     }
 }
