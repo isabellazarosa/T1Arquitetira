@@ -16,7 +16,7 @@ import com.bcopstein.sistvendas.dominio.servicos.ServicoDeVendas;
 
 @Component
 public class CriaOrcamentoUC {
-    private ServicoDeVendas servicoDeVendas;
+    private ServicoDeVendas  servicoDeVendas;
     private ServicoDeEstoque servicoDeEstoque;
     
     //@Autowired
@@ -26,7 +26,7 @@ public class CriaOrcamentoUC {
     }
 
     public OrcamentoDTO run(List<ItemPedidoDTO> itens){
-        PedidoModel pedido = new PedidoModel(0);
+        PedidoModel pedido = new PedidoModel(0); //TODO ta errado isso
         for(ItemPedidoDTO item:itens){
             ProdutoModel produto = servicoDeEstoque.produtoPorCodigo(item.getIdProduto());
             ItemPedidoModel itemPedido = new ItemPedidoModel(produto, item.getQtdade());

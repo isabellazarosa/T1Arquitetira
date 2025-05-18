@@ -2,13 +2,13 @@ package com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.implemReposito
 
 import java.util.List;
 
+import com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.interfaceJPA.OrcamentoJPA_ItfRep;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.bcopstein.sistvendas.dominio.entidades.OrcamentoModel;
 import com.bcopstein.sistvendas.dominio.interfRepositorios.IOrcamentoRepositorio;
-import com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.interfaceJPA.OrcamentoJPA_ItfRep;
 
 @Repository
 @Primary
@@ -41,10 +41,10 @@ public class OrcamentoRepJPA implements IOrcamentoRepositorio {
         orc.efetiva();
         orcamentoJPA.save(orc);
     }
-    
+
     @Override
     public void atualiza(OrcamentoModel orcamento) {
         orcamentoJPA.save(orcamento);
     }
-
+    
 }
