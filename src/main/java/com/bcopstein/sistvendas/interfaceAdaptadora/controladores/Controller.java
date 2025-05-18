@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 //import org.springframework.beans.factory.annotation.Autowired;
+import com.bcopstein.sistvendas.aplicacao.casosDeUso.*;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoEstoqueDTO;
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.OrcamentosEfetivadosNoPeriodoUC;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.CriaOrcamentoUC;
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.ProdutosDisponiveisUC;
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.QuantidadeEstoqueDisponivelUC;
 import com.bcopstein.sistvendas.aplicacao.dtos.ItemPedidoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
@@ -30,6 +26,7 @@ public class Controller {
     private EfetivaOrcamentoUC efetivaOrcamento;
     private QuantidadeEstoqueDisponivelUC quantEstoqueDisponivel;
     private OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo;
+    private ChegadaUC chegada;
 
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
@@ -74,7 +71,7 @@ public class Controller {
     public List<ProdutoEstoqueDTO> quantidadesEmEstoque(){
                 return quantEstoqueDisponivel.run();
             }
-    
+
     @GetMapping("orcamentosEfetivados/{inicio}/{fim}")
     @CrossOrigin(origins = "*")
     public List<OrcamentoResumoDTO> orcamentosEfetivados(@PathVariable String inicio, @PathVariable String fim) {
@@ -84,5 +81,12 @@ public class Controller {
         return orcamentosEfetivadosNoPeriodo.executar(dataInicio, dataFim);
 }
 
+
+    //TODO INFORMAR A CHEGADA DE PRODUTOS NO ESTOQUE
+    @PostMapping("Chegada")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoDTO> chegadaNoEstoque(@RequestBody List<ProdutoDTO> itens){
+        return chegada.run(itens);
+    };
 
 }

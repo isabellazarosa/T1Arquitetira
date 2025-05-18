@@ -3,6 +3,7 @@ package com.bcopstein.sistvendas.dominio.servicos;
 import java.util.List;
 
 //import org.springframework.beans.factory.annotation.Autowired;
+import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
 import org.springframework.stereotype.Service;
 
 
@@ -29,11 +30,20 @@ public class ServicoDeEstoque{
         return this.produtos.consultaPorId(id);
     }
 
+
+
     public int qtdadeEmEstoque(long id){
         return estoque.quantidadeEmEstoque(id);
     }
 
     public void baixaEstoque(long id,int qtdade){
         estoque.baixaEstoque(id,qtdade);
-    }  
+    }
+    public int addEstoque(long codProd){
+        return estoque.addEstoque(codProd);
+    }
+    public int addNovoEstoque(ProdutoDTO dto){
+        return estoque.addNovoEstoque(dto);
+    }
+
 }
