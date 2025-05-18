@@ -68,6 +68,13 @@ public class Controller {
         return efetivaOrcamento.run(idOrcamento);
     }
 
+    //Retorna a quantidade disponível no estoque para uma lista de produtos informados
+    @PostMapping("quantidadeEstoquePorProdutos")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoEstoqueDTO> quantidadeEstoquePorProdutos(@RequestBody List<String> codigosProdutos) {
+        return quantEstoqueDisponivel.run(codigosProdutos);
+    }
+
     // Retorna a quantidade disponível em estoque para todos os itens do catálogo
     @GetMapping("quantidadesEmEstoque")
     @CrossOrigin(origins = "*")
