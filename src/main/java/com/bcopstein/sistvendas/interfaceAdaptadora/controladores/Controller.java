@@ -21,13 +21,6 @@ import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.ProdutoDTO;
 import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoResumoDTO;
 
-import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoRS;
-import com.bcopstein.sistvendas.dominio.politicas.impostos.ImpostoFederalPadrao;
-import com.bcopstein.sistvendas.dominio.politicas.impostos.PoliticaDeImposto;
-
-import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeItem;
-import com.bcopstein.sistvendas.dominio.politicas.descontos.DescontoPorQuantidadeTotalDeItens;
-import com.bcopstein.sistvendas.dominio.politicas.descontos.PoliticaDeDesconto;
 
 import com.bcopstein.sistvendas.dominio.servicos.ServicoDeEstoque;
 import com.bcopstein.sistvendas.dominio.servicos.ServicoDeVendas;
