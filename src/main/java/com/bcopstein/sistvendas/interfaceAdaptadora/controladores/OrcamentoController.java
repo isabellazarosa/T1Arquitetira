@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.CriaOrcamentoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.OrcamentosEfetivadosNoPeriodoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.SolicitarOrcamentoUC;
@@ -26,27 +25,21 @@ import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoResumoDTO;
 @RequestMapping("orcamentos")
 @CrossOrigin(origins = "*")
 public class OrcamentoController {
-    private final CriaOrcamentoUC criaOrcamento;
     private final EfetivaOrcamentoUC efetivaOrcamento;
     private final OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo;
     private final SolicitarOrcamentoUC solicitarOrcamento;
 
     public OrcamentoController(
-        CriaOrcamentoUC criaOrcamento,
         EfetivaOrcamentoUC efetivaOrcamento,
         OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo,
         SolicitarOrcamentoUC solicitarOrcamento
     ) {
-        this.criaOrcamento = criaOrcamento;
+
         this.efetivaOrcamento = efetivaOrcamento;
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
         this.solicitarOrcamento = solicitarOrcamento;
     }
 
-    @PostMapping
-    public OrcamentoDTO novoOrcamento(@RequestBody List<ItemPedidoDTO> itens) {
-        return criaOrcamento.run(itens);
-    }
 
     @GetMapping("/efetivar/{id}")
     public OrcamentoDTO efetivarOrcamento(@PathVariable("id") long idOrcamento) {

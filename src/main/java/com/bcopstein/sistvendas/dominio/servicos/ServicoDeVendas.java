@@ -35,17 +35,62 @@ public class ServicoDeVendas {
 
     public OrcamentoModel criaOrcamento(PedidoModel pedido) {
         var novoOrcamento = new OrcamentoModel();
+        novoOrcamento.setCliente(pedido.getCliente());
+        novoOrcamento.setEstado(pedido.getEstado());
+        novoOrcamento.setPais(pedido.getPais());
         novoOrcamento.addItensPedido(pedido);
+
         double custoItens = novoOrcamento.getItens().stream()
-            .mapToDouble(it->it.getProduto().getPrecoUnitario()*it.getQuantidade())
-            .sum();
-        novoOrcamento.setImposto(custoItens * 0.1);
-        if (novoOrcamento.getItens().size() > 5){
-                novoOrcamento.setDesconto(custoItens * 0.05);
-            }else{
-                novoOrcamento.setDesconto(0.0);
-            }
-        novoOrcamento.setCustoConsumidor(custoItens + novoOrcamento.getImposto() - novoOrcamento.getDesconto());
+                .mapToDouble(it -> it.getProduto().getPrecoUnitario() * it.getQuantidade())
+                .sum();
+        novoOrcamento.setCustoItens(custoItens);
+
+        double imposto = 0.0;
+        String estado = pedido.getEstado().toUpperCase();
+
+        switch (estado) {
+            case "RS":
+            case "RIO GRANDE DO SUL":
+                if (custoItens > 100.0) {
+                    imposto = (custoItens - 100.0) * 0.10;
+                }
+                break;
+
+            case "SP":
+            case "SÃO PAULO":
+                imposto = custoItens * 0.12;
+                break;
+
+            case "PE":
+            case "PERNAMBUCO":
+                for (ItemPedidoModel item : novoOrcamento.getItens()) {
+                    String descricao = item.getProduto().getDescricao();
+                    double preco = item.getProduto().getPrecoUnitario();
+                    int quantidade = item.getQuantidade();
+                    boolean essencial = descricao.trim().endsWith("*");
+                    double aliquota = essencial ? 0.05 : 0.15;
+                    imposto += preco * quantidade * aliquota;
+                }
+                break;
+
+            default:
+                // Alíquota padrão de 10% para outros estados
+                imposto = custoItens * 0.10;
+                break;
+        }
+
+        novoOrcamento.setImposto(imposto);
+
+        // Regras de desconto
+        if (novoOrcamento.getItens().size() > 5) {
+            novoOrcamento.setDesconto(custoItens * 0.05);
+        } else {
+            novoOrcamento.setDesconto(0.0);
+        }
+
+        double custoFinal = custoItens + imposto - novoOrcamento.getDesconto();
+        novoOrcamento.setCustoConsumidor(custoFinal);
+
         return this.orcamentos.cadastra(novoOrcamento);
     }
  
