@@ -2,9 +2,9 @@ package com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.implemReposito
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.bcopstein.sistvendas.dominio.entidades.OrcamentoModel;
 import com.bcopstein.sistvendas.dominio.interfRepositorios.IOrcamentoRepositorio;
@@ -24,24 +24,23 @@ public class OrcamentoRepJPA implements IOrcamentoRepositorio {
 
     @Override
     public OrcamentoModel cadastra(OrcamentoModel orcamento) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cadastra'");
+        return orcamentoJPA.save(orcamento);
     }
 
     @Override
     public OrcamentoModel recuperaPorId(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'recuperaPorId'");
+        return orcamentoJPA.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orçamento com ID " + id + " não encontrado"));
     }
 
     @Override
     public void marcaComoEfetivado(long id) {
         OrcamentoModel orc = orcamentoJPA.findById(id)
-            .orElseThrow(() -> new RuntimeException("Orçamento não encontrado"));
+            .orElseThrow(() -> new RuntimeException("Orçamento com ID " + id + " não encontrado"));
         orc.efetiva();
         orcamentoJPA.save(orc);
     }
-    
+
     @Override
     public void atualiza(OrcamentoModel orcamento) {
         orcamentoJPA.save(orcamento);
