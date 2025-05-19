@@ -98,6 +98,10 @@ public class ServicoDeVendas {
         // Recupera o orçamento
         var orcamento = this.orcamentos.recuperaPorId(id);
         var ok = true;
+        if (orcamento.getDataEfetivacao().isBefore(LocalDate.now().minusDays(21))) {
+            throw new RuntimeException("Orçamento expirado");
+        }
+
         // Verifica se tem quantidade em estoque para todos os itens
         for (ItemPedidoModel itemPedido:orcamento.getItens()) {
             int qtdade = estoque.quantidadeEmEstoque(itemPedido.getProduto().getId());
