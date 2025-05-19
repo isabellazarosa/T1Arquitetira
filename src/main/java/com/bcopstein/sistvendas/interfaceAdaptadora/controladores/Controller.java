@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bcopstein.sistvendas.aplicacao.casosDeUso.ChegadaUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.CriaOrcamentoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.OrcamentosEfetivadosNoPeriodoUC;
@@ -33,6 +34,7 @@ public class Controller {
     private QuantidadeEstoqueDisponivelUC quantEstoqueDisponivel;
     private OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo;
     private SolicitarOrcamentoUC solicitarOrcamento;
+    private ChegadaUC chegada;
 
     //@Autowired
     public Controller(ProdutosDisponiveisUC produtosDisponiveis,
@@ -40,13 +42,15 @@ public class Controller {
                       EfetivaOrcamentoUC efetivaOrcamento,
                       QuantidadeEstoqueDisponivelUC quantEstoqueDisponivel,
                       OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo,
-                      SolicitarOrcamentoUC solicitarOrcamento){
+                      SolicitarOrcamentoUC solicitarOrcamento,
+                      ChegadaUC chegada){
         this.produtosDisponiveis = produtosDisponiveis;
         this.criaOrcamento = criaOrcamento;
         this.efetivaOrcamento = efetivaOrcamento;
         this.quantEstoqueDisponivel = quantEstoqueDisponivel;
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
         this.solicitarOrcamento = solicitarOrcamento;
+        this.chegada = chegada;
     }
 
     @GetMapping("")
@@ -59,7 +63,8 @@ public class Controller {
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosDisponiveis(){
         return produtosDisponiveis.run();
-    }    
+    }
+
 
     @PostMapping("novoOrcamento")
     @CrossOrigin(origins = "*")
@@ -73,13 +78,21 @@ public class Controller {
         return efetivaOrcamento.run(idOrcamento);
     }
 
+    //Retorna a quantidade disponível no estoque para uma lista de produtos informados
+    @GetMapping("quantidadeEstoquePorProdutos")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoEstoqueDTO> quantidadeEstoquePorProdutos(@RequestBody List<Long> codigosProdutos) {
+        System.out.println("codigo =" + codigosProdutos);
+        return quantEstoqueDisponivel.run(codigosProdutos);
+    }
+
     // Retorna a quantidade disponível em estoque para todos os itens do catálogo
     @GetMapping("quantidadesEmEstoque")
     @CrossOrigin(origins = "*")
     public List<ProdutoEstoqueDTO> quantidadesEmEstoque(){
                 return quantEstoqueDisponivel.run();
             }
-    
+
     @GetMapping("orcamentosEfetivados/{inicio}/{fim}")
     @CrossOrigin(origins = "*")
     public List<OrcamentoResumoDTO> orcamentosEfetivados(@PathVariable String inicio, @PathVariable String fim) {
@@ -100,5 +113,12 @@ public class Controller {
         return ResponseEntity.ok(orcamentoDto);
     }
 
+
+    //TODO INFORMAR A CHEGADA DE PRODUTOS NO ESTOQUE
+    @PostMapping("chegada")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoDTO> chegadaNoEstoque(@RequestBody List<ProdutoDTO> itens){
+        return chegada.run(itens);
+    };
 
 }

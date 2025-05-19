@@ -31,4 +31,17 @@ public class QuantidadeEstoqueDisponivelUC {
                 })
                 .toList();
     }
+
+    public List<ProdutoEstoqueDTO> run(List<Long> codigosProdutos) {
+        return servicoEstoque.produtosDisponiveis().stream()
+                .filter(p -> codigosProdutos.contains(p.getId()))
+                .map(p -> {
+                    int qtd = servicoEstoque.qtdadeEmEstoque(p.getId());
+                    return ProdutoEstoqueDTO.fromModel(
+                            p.getId(), p.getDescricao(), p.getPrecoUnitario(), qtd
+                    );
+                })
+                .toList();
+    }
+
 }
