@@ -82,13 +82,11 @@ public class ServicoDeVendas {
         novoOrcamento.setImposto(imposto);
 
         // Regras de desconto
-        if (novoOrcamento.getItens().size() > 5) {
-            novoOrcamento.setDesconto(custoItens * 0.05);
-        } else {
-            novoOrcamento.setDesconto(0.0);
-        }
+        com.bcopstein.sistvendas.dominio.descontos.DescontoService descontoService = new com.bcopstein.sistvendas.dominio.descontos.DescontoService();
+        double desconto = descontoService.calcularDescontos(novoOrcamento);
+        novoOrcamento.setDesconto(desconto);
 
-        double custoFinal = custoItens + imposto - novoOrcamento.getDesconto();
+        double custoFinal = custoItens + imposto - desconto;
         novoOrcamento.setCustoConsumidor(custoFinal);
 
         return this.orcamentos.cadastra(novoOrcamento);
