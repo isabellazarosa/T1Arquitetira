@@ -67,7 +67,8 @@ public class Controller {
     @CrossOrigin(origins = "*")
     public List<ProdutoDTO> produtosDisponiveis(){
         return produtosDisponiveis.run();
-    }    
+    }
+
 
     @PostMapping("novoOrcamento")
     @CrossOrigin(origins = "*")
@@ -79,6 +80,14 @@ public class Controller {
     @CrossOrigin(origins = "*")
     public OrcamentoDTO efetivaOrcamento(@PathVariable(value="id") long idOrcamento){
         return efetivaOrcamento.run(idOrcamento);
+    }
+
+    //Retorna a quantidade disponível no estoque para uma lista de produtos informados
+    @GetMapping("quantidadeEstoquePorProdutos")
+    @CrossOrigin(origins = "*")
+    public List<ProdutoEstoqueDTO> quantidadeEstoquePorProdutos(@RequestBody List<Long> codigosProdutos) {
+        System.out.println("codigo =" + codigosProdutos);
+        return quantEstoqueDisponivel.run(codigosProdutos);
     }
 
     // Retorna a quantidade disponível em estoque para todos os itens do catálogo
