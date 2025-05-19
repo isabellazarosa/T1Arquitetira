@@ -3,6 +3,7 @@ package com.bcopstein.sistvendas.aplicacao.casosDeUso;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.bcopstein.sistvendas.aplicacao.dtos.PedidoCreateDTO;
 import org.springframework.stereotype.Component;
 
 import com.bcopstein.sistvendas.aplicacao.dtos.ItemPedidoDTO;
@@ -25,17 +26,20 @@ public class SolicitarOrcamentoUC {
         this.servicoDeEstoque = servicoDeEstoque;
         this.servicoDeVendas = servicoDeVendas;
     }
-    public OrcamentoDTO executar(String cliente, String estado, String pais, List<ItemPedidoDTO> itensDto) {
-        List<ItemPedidoModel> itens = itensDto.stream().map(dto -> {
+    public OrcamentoDTO executar(PedidoCreateDTO itensDto) {
+        List<ItemPedidoModel> itens = itensDto.getItensPedido().stream().map(dto -> {
             ProdutoModel produto = servicoDeEstoque.produtoPorCodigo(dto.getIdProduto());
             if (produto == null) {
                 throw new IllegalArgumentException("Produto não encontrado: " + dto.getIdProduto());
             }
             return new ItemPedidoModel(produto, dto.getQtdade());
-        }).collect(Collectors.toList());
+        }).toList();
 
         PedidoModel pedido = new PedidoModel(1L);
         itens.forEach(pedido::addItem);
+        pedido.setEstado(itensDto.getEstado());
+        pedido.setPais(itensDto.getPais());
+
         OrcamentoModel orcamento = servicoDeVendas.criaOrcamento(pedido);
 
         return OrcamentoDTO.fromModel(orcamento);

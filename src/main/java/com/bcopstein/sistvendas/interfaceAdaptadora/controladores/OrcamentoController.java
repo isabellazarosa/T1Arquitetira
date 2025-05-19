@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.bcopstein.sistvendas.aplicacao.dtos.PedidoCreateDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,12 +57,10 @@ public class OrcamentoController {
 
     @PostMapping("/solicitar")
     public ResponseEntity<OrcamentoDTO> solicitarOrcamento(
-        @RequestParam String cliente,
-        @RequestParam String estado,
-        @RequestParam String pais,
-        @RequestBody List<ItemPedidoDTO> itensPedido
+        @RequestBody PedidoCreateDTO itensPedido
     ) {
-        OrcamentoDTO orcamentoDto = solicitarOrcamento.executar(cliente, estado, pais, itensPedido);
+        System.out.println(itensPedido.getItensPedido().getFirst());
+        OrcamentoDTO orcamentoDto = solicitarOrcamento.executar(itensPedido);
         return ResponseEntity.ok(orcamentoDto);
     }
 }
