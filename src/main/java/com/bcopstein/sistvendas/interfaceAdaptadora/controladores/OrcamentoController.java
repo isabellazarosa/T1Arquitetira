@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.bcopstein.sistvendas.aplicacao.dtos.PedidoCreateDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bcopstein.sistvendas.aplicacao.casosDeUso.CriaOrcamentoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.EfetivaOrcamentoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.OrcamentosEfetivadosNoPeriodoUC;
 import com.bcopstein.sistvendas.aplicacao.casosDeUso.SolicitarOrcamentoUC;
@@ -26,27 +26,21 @@ import com.bcopstein.sistvendas.aplicacao.dtos.OrcamentoResumoDTO;
 @RequestMapping("orcamentos")
 @CrossOrigin(origins = "*")
 public class OrcamentoController {
-    private final CriaOrcamentoUC criaOrcamento;
     private final EfetivaOrcamentoUC efetivaOrcamento;
     private final OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo;
     private final SolicitarOrcamentoUC solicitarOrcamento;
 
     public OrcamentoController(
-        CriaOrcamentoUC criaOrcamento,
         EfetivaOrcamentoUC efetivaOrcamento,
         OrcamentosEfetivadosNoPeriodoUC orcamentosEfetivadosNoPeriodo,
         SolicitarOrcamentoUC solicitarOrcamento
     ) {
-        this.criaOrcamento = criaOrcamento;
+
         this.efetivaOrcamento = efetivaOrcamento;
         this.orcamentosEfetivadosNoPeriodo = orcamentosEfetivadosNoPeriodo;
         this.solicitarOrcamento = solicitarOrcamento;
     }
 
-    @PostMapping
-    public OrcamentoDTO novoOrcamento(@RequestBody List<ItemPedidoDTO> itens) {
-        return criaOrcamento.run(itens);
-    }
 
     @GetMapping("/efetivar/{id}")
     public OrcamentoDTO efetivarOrcamento(@PathVariable("id") long idOrcamento) {
@@ -63,12 +57,10 @@ public class OrcamentoController {
 
     @PostMapping("/solicitar")
     public ResponseEntity<OrcamentoDTO> solicitarOrcamento(
-        @RequestParam String cliente,
-        @RequestParam String estado,
-        @RequestParam String pais,
-        @RequestBody List<ItemPedidoDTO> itensPedido
+        @RequestBody PedidoCreateDTO itensPedido
     ) {
-        OrcamentoDTO orcamentoDto = solicitarOrcamento.executar(cliente, estado, pais, itensPedido);
+        System.out.println(itensPedido.getItensPedido().getFirst());
+        OrcamentoDTO orcamentoDto = solicitarOrcamento.executar(itensPedido);
         return ResponseEntity.ok(orcamentoDto);
     }
 }

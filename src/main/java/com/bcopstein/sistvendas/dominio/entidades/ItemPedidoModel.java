@@ -14,6 +14,10 @@ public class ItemPedidoModel {
         this.quantidade = quantidade;
     }
 
+    public ItemPedidoModel() {
+
+    }
+
     public ProdutoModel getProduto() {
         return produto;
     }

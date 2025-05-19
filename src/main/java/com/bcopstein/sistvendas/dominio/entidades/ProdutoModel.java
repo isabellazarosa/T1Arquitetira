@@ -8,11 +8,14 @@ public class ProdutoModel{
     private String descricao;
     private double precoUnitario;
 
-
     public ProdutoModel(long id, String descricao, double precoUnitario) {
         this.id = id;
         this.descricao = descricao;
         this.precoUnitario = precoUnitario;
+    }
+
+    public ProdutoModel() {
+
     }
 
     public long getId() {

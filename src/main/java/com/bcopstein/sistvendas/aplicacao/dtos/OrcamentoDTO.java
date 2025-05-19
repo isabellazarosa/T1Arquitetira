@@ -10,6 +10,10 @@ import com.bcopstein.sistvendas.dominio.entidades.OrcamentoModel;
 
 public class OrcamentoDTO {
     private long id;
+    private String cliente;
+    private String pais;
+    private String estado;
+
     private List<ItemPedidoDTO> itens;
     private double custoItens;
     private double imposto;
