@@ -1,4 +1,4 @@
-package com.bcopstein.sistvendas.dominio.descontos;
+package com.bcopstein.sistvendas.dominio.servicos;
 
 import java.util.ArrayList;
 import java.util.List;

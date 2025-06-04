@@ -1,19 +1,26 @@
-package com.bcopstein.sistvendas.dominio.entidades;
+package com.bcopstein.sistvendas.interfaceAdaptadora.repositorios.entidades;
 
-public class ItemPedidoModel {
-    private ProdutoModel produto;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Embeddable
+public class ItemPedido {
+    @ManyToOne
+    @JoinColumn(name = "produto_id") 
+    private Produto produto;
     private int quantidade;
     
-    public ItemPedidoModel(ProdutoModel produto, int quantidade) {
+    public ItemPedido(Produto produto, int quantidade) {
         this.produto = produto;
         this.quantidade = quantidade;
     }
 
-    public ItemPedidoModel() {
+    public ItemPedido() {
 
     }
 
-    public ProdutoModel getProduto() {
+    public Produto getProduto() {
         return produto;
     }
 

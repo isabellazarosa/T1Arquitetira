@@ -1,10 +1,9 @@
 package com.bcopstein.sistvendas.dominio.servicos;
 
-import java.util.List;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bcopstein.sistvendas.dominio.entidades.ItemPedidoModel;
@@ -80,9 +79,12 @@ public class ServicoDeVendas {
         }
 
         novoOrcamento.setImposto(imposto);
+        
+        // Regras de imposto TODO
+        // ImpostoService impostoService = new ImpostoService();
 
         // Regras de desconto
-        com.bcopstein.sistvendas.dominio.descontos.DescontoService descontoService = new com.bcopstein.sistvendas.dominio.descontos.DescontoService();
+        DescontoService descontoService = new DescontoService();
         double desconto = descontoService.calcularDescontos(novoOrcamento);
         novoOrcamento.setDesconto(desconto);
 
